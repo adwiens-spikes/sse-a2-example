@@ -15,8 +15,8 @@ workspace(
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-RULES_NODEJS_VERSION = "0.31.1"
-RULES_NODEJS_SHA256 = "e04a82a72146bfbca2d0575947daa60fda1878c8d3a3afe868a8ec39a6b968bb"
+RULES_NODEJS_VERSION = "0.34.0"
+RULES_NODEJS_SHA256 = "7c4a690268be97c96f04d505224ec4cb1ae53c2c2b68be495c9bd2634296a5cd"
 http_archive(
     name = "build_bazel_rules_nodejs",
     sha256 = RULES_NODEJS_SHA256,
@@ -24,32 +24,32 @@ http_archive(
 )
 
 # Rules for compiling sass
-RULES_SASS_VERSION = "3a4f31c74513ccfacce3f955b5c006352f7e9587"
-RULES_SASS_SHA256 = "4c87befcb17282b039ba8341df9a6cc45f461bf05776dcf35c7e40c7e79ce374"
+RULES_SASS_VERSION = "86ca977cf2a8ed481859f83a286e164d07335116"
+RULES_SASS_SHA256 = "4f05239080175a3f4efa8982d2b7775892d656bb47e8cf56914d5f9441fb5ea6"
 http_archive(
     name = "io_bazel_rules_sass",
-#    sha256 = RULES_SASS_SHA256,
-#    url = "https://github.com/bazelbuild/rules_sass/archive/%s.zip" % RULES_SASS_VERSION,
-#    strip_prefix = "rules_sass-%s" % RULES_SASS_VERSION,
-    # TODO: change back to upstream release after https://github.com/bazelbuild/rules_sass/pull/87 merged and released
-    strip_prefix = "rules_sass-9862dfc96a4a1f66fe171ef5e043b29853e8445b",
-    url = "https://github.com/manekinekko/rules_sass/archive/9862dfc96a4a1f66fe171ef5e043b29853e8445b.zip",
+    sha256 = RULES_SASS_SHA256,
+    url = "https://github.com/bazelbuild/rules_sass/archive/%s.zip" % RULES_SASS_VERSION,
+    strip_prefix = "rules_sass-%s" % RULES_SASS_VERSION,
 )
 
 ####################################
 # Load and install our dependencies downloaded above.
 
-load("@build_bazel_rules_nodejs//:defs.bzl", "check_bazel_version", "node_repositories",
-    "yarn_install")
+# Check the bazel version and download npm dependencies
+load("@build_bazel_rules_nodejs//:defs.bzl", "check_bazel_version", "node_repositories", "yarn_install")
+
+# Bazel version must be at least the following version because:
+#   - 0.27.0 Adds managed directories support
 check_bazel_version(
     message = """
 You no longer need to install Bazel on your machine.
-Your project should have a dependency on the @bazel/bazel package which supplies it.
+Angular has a dependency on the @bazel/bazel package which supplies it.
 Try running `yarn bazel` instead.
     (If you did run that, check that you've got a fresh `yarn install`)
 
 """,
-    minimum_bazel_version = "0.26.0",
+    minimum_bazel_version = "0.27.0",
 )
 
 # Setup the Node repositories. We need a NodeJS version that is more recent than v10.15.0
@@ -64,14 +64,10 @@ node_repositories(
     node_version = "10.16.0",
 )
 
+# Setup the Node.js toolchain & install our npm dependencies into @npm
 yarn_install(
     name = "npm",
-    data = ["//:angular-metadata.tsconfig.json"],
     package_json = "//:package.json",
-    # Temporarily disable node_modules symlinking until the fix for
-    # https://github.com/bazelbuild/bazel/issues/8487 makes it into a
-    # future Bazel release
-    symlink_node_modules = False,
     yarn_lock = "//:yarn.lock",
 )
 
