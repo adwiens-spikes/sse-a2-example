@@ -4,14 +4,16 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
+    "bazel": "bazel",
     "postinstall": "ngc -p ./angular-metadata.tsconfig.json",
-    "start": "ng serve",
-    "build": "ng build",
+    "start:ng": "ng serve",
+    "start:bzl": "ibazel run //src:devserver",
+    "build:ng": "ng build",
+    "build:bzl": "bazel build //src:bundle",
     "test:ng": "ng test",
     "test:bzl": "bazel test //src/...",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "bazel": "bazel"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
