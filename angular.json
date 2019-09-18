@@ -3,81 +3,68 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sse-a2-example": {
+    "client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "",
-      "sourceRoot": "src",
+      "root": "projects/client",
+      "sourceRoot": "projects/client/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/bazel:build",
           "options": {
-            "targetLabel": "//src:prodapp",
+            "targetLabel": "//projects/client/src:prodapp",
             "bazelCommand": "build"
           },
           "configurations": {
             "production": {
-              "targetLabel": "//src:prodapp"
+              "targetLabel": "//projects/client/src:prodapp"
             }
           }
         },
         "serve": {
           "builder": "@angular/bazel:build",
           "options": {
-            "targetLabel": "//src:devserver",
+            "targetLabel": "//projects/client/src:devserver",
             "bazelCommand": "run",
             "watch": true
           },
           "configurations": {
             "production": {
-              "targetLabel": "//src:prodserver"
+              "targetLabel": "//projects/client/src:prodserver"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sse-a2-example:build"
+            "browserTarget": "client:build"
           }
         },
         "test": {
           "builder": "@angular/bazel:build",
           "options": {
             "bazelCommand": "test",
-            "targetLabel": "//src:test"
+            "targetLabel": "//projects/client/src:test"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
+              "projects/client/tsconfig.app.json",
+              "projects/client/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
             ]
           }
-        },
-        "e2e": {
-          "builder": "@angular/bazel:build",
-          "options": {
-            "bazelCommand": "test",
-            "targetLabel": "//e2e:devserver_test"
-          },
-          "configurations": {
-            "production": {
-              "targetLabel": "//e2e:prodserver_test"
-            }
-          }
         }
       }
     }},
-  "defaultProject": "sse-a2-example"
+  "defaultProject": "client"
 }

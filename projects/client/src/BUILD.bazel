@@ -50,7 +50,7 @@ rollup_bundle(
     name = "bundle",
     entry_point = ":main.prod.ts",
     deps = [
-        "//src",
+        "//projects/client/src",
         "@npm//@angular/router",
         "@npm//rxjs",
     ],
@@ -88,7 +88,7 @@ filegroup(
 ts_devserver(
     name = "devserver",
     port = 4200,
-    entry_module = "project/src/main.dev",
+    entry_module = "project/projects/client/src/main.dev",
     serving_path = "/bundle.min.js",
     scripts = [
         "@npm//:node_modules/tslib/tslib.js",
