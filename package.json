@@ -7,9 +7,9 @@
     "bazel": "bazel",
     "postinstall": "ngc -p ./angular-metadata.tsconfig.json",
     "start:client": "ng serve",
-    "start:server": "ibazel run //projects/server:server",
+    "start:server": "ibazel run //projects/server",
     "build:client": "ng build",
-    "build:server": "bazel build //projects/server:server",
+    "build:server": "bazel build //projects/server",
     "lint:client": "ng lint",
     "e2e": "ng e2e"
   },
